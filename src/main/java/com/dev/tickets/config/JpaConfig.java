@@ -1,4 +1,4 @@
-package com.dev.tickets.domain.config;
+package com.dev.tickets.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

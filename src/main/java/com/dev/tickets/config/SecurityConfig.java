@@ -1,6 +1,6 @@
-package com.dev.tickets.domain.config;
+package com.dev.tickets.config;
 
-import com.dev.tickets.domain.filters.UserProvisioningFilter;
+import com.dev.tickets.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
