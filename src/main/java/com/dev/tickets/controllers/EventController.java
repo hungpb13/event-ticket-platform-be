@@ -1,0 +1,43 @@
+package com.dev.tickets.controllers;
+
+import com.dev.tickets.domain.dtos.CreateEventRequestDto;
+import com.dev.tickets.domain.entities.Event;
+import com.dev.tickets.domain.requests.CreateEventRequest;
+import com.dev.tickets.domain.responses.CreateEventResponse;
+import com.dev.tickets.mappers.EventMapper;
+import com.dev.tickets.services.EventService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping(path = "/api/v1/events")
+@RequiredArgsConstructor
+public class EventController {
+
+    private final EventService eventService;
+    private final EventMapper eventMapper;
+
+    @PostMapping
+    public ResponseEntity<CreateEventResponse> createEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @Valid @RequestBody CreateEventRequestDto dto
+    ) {
+        CreateEventRequest createEventRequest = eventMapper.toCreateEventRequest(dto);
+        UUID organizerId = UUID.fromString(jwt.getSubject());
+        Event createdEvent = eventService.createEvent(organizerId, createEventRequest);
+        return new ResponseEntity<>(
+                eventMapper.toCreateEventResponse(createdEvent),
+                HttpStatus.CREATED
+        );
+    }
+}
