@@ -4,6 +4,7 @@ import com.dev.tickets.domain.dtos.CreateEventRequestDto;
 import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.requests.CreateEventRequest;
 import com.dev.tickets.domain.responses.CreateEventResponse;
+import com.dev.tickets.domain.responses.GetEventDetailsResponse;
 import com.dev.tickets.domain.responses.ListEventResponse;
 import com.dev.tickets.mappers.EventMapper;
 import com.dev.tickets.services.EventService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -51,6 +53,18 @@ public class EventController {
         Page<ListEventResponse> events = eventService.getEventsForOrganizer(organizerId, pageable)
                 .map(eventMapper::toListEventResponse);
         return ResponseEntity.ok(events);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<GetEventDetailsResponse> getEventDetailsForOrganizer(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable("id") UUID id
+    ) {
+        UUID organizerId = getUserId(jwt);
+        return eventService.getEventDetailsForOrganizer(id, organizerId)
+                .map(eventMapper::toGetEventDetailsResponse)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private static UUID getUserId(Jwt jwt) {

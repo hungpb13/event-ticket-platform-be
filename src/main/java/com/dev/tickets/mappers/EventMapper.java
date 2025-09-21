@@ -6,9 +6,7 @@ import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.entities.TicketType;
 import com.dev.tickets.domain.requests.CreateEventRequest;
 import com.dev.tickets.domain.requests.CreateTicketTypeRequest;
-import com.dev.tickets.domain.responses.CreateEventResponse;
-import com.dev.tickets.domain.responses.ListEventResponse;
-import com.dev.tickets.domain.responses.ListTicketTypeResponse;
+import com.dev.tickets.domain.responses.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -24,4 +22,8 @@ public interface EventMapper {
     ListTicketTypeResponse toListTicketTypeResponse(TicketType ticketType);
 
     ListEventResponse toListEventResponse(Event event);
+
+    GetTicketTypeResponse toGetTicketTypeResponse(TicketType ticketType);
+
+    GetEventDetailsResponse toGetEventDetailsResponse(Event event);
 }
