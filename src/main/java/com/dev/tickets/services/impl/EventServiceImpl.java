@@ -3,6 +3,7 @@ package com.dev.tickets.services.impl;
 import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.entities.TicketType;
 import com.dev.tickets.domain.entities.User;
+import com.dev.tickets.domain.enums.EventStatusEnum;
 import com.dev.tickets.domain.requests.CreateEventRequest;
 import com.dev.tickets.domain.requests.UpdateEventRequest;
 import com.dev.tickets.domain.requests.UpdateTicketTypeRequest;
@@ -138,5 +139,10 @@ public class EventServiceImpl implements EventService {
     public void deleteEventForOrganizer(UUID id, UUID organizerId) {
         getEventDetailsForOrganizer(id, organizerId)
                 .ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> getPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 }

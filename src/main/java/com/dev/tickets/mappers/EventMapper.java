@@ -38,4 +38,6 @@ public interface EventMapper {
     UpdateTicketTypeResponse toUpdateTicketTypeResponse(TicketType ticketType);
 
     UpdateEventResponse toUpdateEventResponse(Event event);
+
+    ListPublishedEventResponse toListPublishedEventResponse(Event event);
 }
