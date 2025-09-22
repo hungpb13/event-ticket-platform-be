@@ -1,11 +1,14 @@
 package com.dev.tickets.controllers;
 
 import com.dev.tickets.domain.dtos.CreateEventRequestDto;
+import com.dev.tickets.domain.dtos.UpdateEventRequestDto;
 import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.requests.CreateEventRequest;
+import com.dev.tickets.domain.requests.UpdateEventRequest;
 import com.dev.tickets.domain.responses.CreateEventResponse;
 import com.dev.tickets.domain.responses.GetEventDetailsResponse;
 import com.dev.tickets.domain.responses.ListEventResponse;
+import com.dev.tickets.domain.responses.UpdateEventResponse;
 import com.dev.tickets.mappers.EventMapper;
 import com.dev.tickets.services.EventService;
 import jakarta.validation.Valid;
@@ -18,7 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -65,6 +67,18 @@ public class EventController {
                 .map(eventMapper::toGetEventDetailsResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<UpdateEventResponse> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @Valid @RequestBody UpdateEventRequestDto dto,
+            @PathVariable("id") UUID id
+    ) {
+        UpdateEventRequest updateEventRequest = eventMapper.toUpdateEventRequest(dto);
+        UUID organizerId = getUserId(jwt);
+        Event updatedEvent = eventService.updateEventForOrganizer(id, organizerId, updateEventRequest);
+        return ResponseEntity.ok(eventMapper.toUpdateEventResponse(updatedEvent));
     }
 
     private static UUID getUserId(Jwt jwt) {

@@ -2,10 +2,14 @@ package com.dev.tickets.mappers;
 
 import com.dev.tickets.domain.dtos.CreateEventRequestDto;
 import com.dev.tickets.domain.dtos.CreateTicketTypeRequestDto;
+import com.dev.tickets.domain.dtos.UpdateEventRequestDto;
+import com.dev.tickets.domain.dtos.UpdateTicketTypeRequestDto;
 import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.entities.TicketType;
 import com.dev.tickets.domain.requests.CreateEventRequest;
 import com.dev.tickets.domain.requests.CreateTicketTypeRequest;
+import com.dev.tickets.domain.requests.UpdateEventRequest;
+import com.dev.tickets.domain.requests.UpdateTicketTypeRequest;
 import com.dev.tickets.domain.responses.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -26,4 +30,12 @@ public interface EventMapper {
     GetTicketTypeResponse toGetTicketTypeResponse(TicketType ticketType);
 
     GetEventDetailsResponse toGetEventDetailsResponse(Event event);
+
+    UpdateTicketTypeRequest toUpdateTicketTypeRequest(UpdateTicketTypeRequestDto dto);
+
+    UpdateEventRequest toUpdateEventRequest(UpdateEventRequestDto dto);
+
+    UpdateTicketTypeResponse toUpdateTicketTypeResponse(TicketType ticketType);
+
+    UpdateEventResponse toUpdateEventResponse(Event event);
 }

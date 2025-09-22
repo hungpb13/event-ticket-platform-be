@@ -1,6 +1,9 @@
 package com.dev.tickets.controllers;
 
 import com.dev.tickets.domain.dtos.ErrorDto;
+import com.dev.tickets.exceptions.EventNotFoundException;
+import com.dev.tickets.exceptions.EventUpdateException;
+import com.dev.tickets.exceptions.TicketTypeNotFoundException;
 import com.dev.tickets.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +83,54 @@ public class GlobalExceptionHandler {
                 .builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message("User not found")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleEventNotFoundException(EventNotFoundException e) {
+        log.error("Caught EventNotFoundException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Event not found")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(TicketTypeNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleTicketTypeNotFoundException(TicketTypeNotFoundException e) {
+        log.error("Caught TicketTypeNotFoundException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Ticket type not found")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(EventUpdateException.class)
+    public ResponseEntity<ErrorDto> handleEventUpdateException(EventUpdateException e) {
+        log.error("Caught EventUpdateException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Unable to update event")
                 .build();
 
         return new ResponseEntity<>(

@@ -2,6 +2,7 @@ package com.dev.tickets.services;
 
 import com.dev.tickets.domain.entities.Event;
 import com.dev.tickets.domain.requests.CreateEventRequest;
+import com.dev.tickets.domain.requests.UpdateEventRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +15,6 @@ public interface EventService {
     Page<Event> getEventsForOrganizer(UUID organizerId, Pageable pageable);
 
     Optional<Event> getEventDetailsForOrganizer(UUID id, UUID organizerId);
+
+    Event updateEventForOrganizer(UUID id, UUID organizerId, UpdateEventRequest request);
 }
