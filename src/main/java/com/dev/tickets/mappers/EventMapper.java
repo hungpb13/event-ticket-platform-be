@@ -40,4 +40,8 @@ public interface EventMapper {
     UpdateEventResponse toUpdateEventResponse(Event event);
 
     ListPublishedEventResponse toListPublishedEventResponse(Event event);
+
+    GetPublishedEventTicketTypeResponse toGetPublishedEventTicketTypeResponse(TicketType ticketType);
+
+    GetPublishedEventDetailsResponse toGetPublishedEventDetailsResponse(Event event);
 }
