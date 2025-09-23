@@ -1,10 +1,7 @@
 package com.dev.tickets.controllers;
 
 import com.dev.tickets.domain.dtos.ErrorDto;
-import com.dev.tickets.exceptions.EventNotFoundException;
-import com.dev.tickets.exceptions.EventUpdateException;
-import com.dev.tickets.exceptions.TicketTypeNotFoundException;
-import com.dev.tickets.exceptions.UserNotFoundException;
+import com.dev.tickets.exceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -131,6 +128,54 @@ public class GlobalExceptionHandler {
                 .builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message("Unable to update event")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(QrCodeGenerationException.class)
+    public ResponseEntity<ErrorDto> handleQrCodeGenerationException(QrCodeGenerationException e) {
+        log.error("Caught QrCodeGenerationException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("Unable to generate QR Code")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(QrCodeNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleQrCodeNotFoundException(QrCodeNotFoundException e) {
+        log.error("Caught QrCodeNotFoundException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message("QR Code not found")
+                .build();
+
+        return new ResponseEntity<>(
+                error,
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(TicketsSoldOutException.class)
+    public ResponseEntity<ErrorDto> handleTicketsSoldOutException(TicketsSoldOutException e) {
+        log.error("Caught TicketsSoldOutException: ", e);
+
+        ErrorDto error = ErrorDto
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("Tickets are sold out for this ticket type")
                 .build();
 
         return new ResponseEntity<>(
